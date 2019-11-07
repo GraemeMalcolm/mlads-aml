@@ -47,7 +47,7 @@ You'll also need cloud-based compute on which you can run experiments and traini
 
 4. Note the **Inference Clusters** tab. This is where you can create and manage compute targets on which to deploy your trained models as web services for client applications to consume.
 
-5. Note the **Attached Compute** tab. This is where you could attach a virtual machine or Databricks cluster that exists outside of your workspace.
+5. Note the **Attached Compute** tab. This is where you could attach cloud compute such as a virtual machine or Databricks cluster that exists outside of your workspace.
 
 ## Task 4: Get Started with the Azure ML SDK
 
@@ -57,7 +57,7 @@ You can perform most asset management tasks to set up your environment in the *S
 2. In the notebook environment, open a new **Terminal**, and in the **Users** folder, run the following command:
 
     ```bash
-    git clone https://github.com/GraemeMalcolm/mlads=aml
+    git clone https://github.com/GraemeMalcolm/mlads-aml
     ```
 
 3. After the comand has completed, close the terminal and view the home folder in your notebook file explorer - it should contain an **mlads-aml** folder, containing the files you will use in the rest of this lab.
