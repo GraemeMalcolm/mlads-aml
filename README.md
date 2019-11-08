@@ -9,6 +9,6 @@ The exercises in this lab are designed to help you explore the key concepts and 
 So, ready to get started?
 
 - [Exercise 1: Getting Started with Azure ML](ex1.md)
-- [Exercise 2: No-code ML with the Visual Designer](ex2.md)
-- [Exercise 3: Optimizing Model Training](ex3.md)
-- [Exercise 4: Automating ML Workflows with Pipelines](ex4.md)
+- [Exercise 2: Optimizing Model Training](ex2.md)
+- [Exercise 3: Automating ML Workflows with Pipelines](ex3.md)
+- [Exercise 4: No-code ML with the Visual Designer](ex4.md)
