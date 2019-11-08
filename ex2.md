@@ -4,7 +4,7 @@
 
 Before you start this exercise, ensure that you have completed the [previous execise](ex1.md).
 
-## Task 1: Use HyperDrive and AutoML
+## Task 1: Tune Hyperparameters and Use Automated ML
 
 You've trained a model using a particular algorithm and hyperparameter settings, with moderate, but not great, results. With Azure ML  you have the ability to leverage scalable cloud compute, so it's time to use it to scale out your training experiments and try multiple combinations of algorithms and parameters to find the optimal model.
 
