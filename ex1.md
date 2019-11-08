@@ -53,7 +53,7 @@ You'll also need cloud-based compute on which you can run experiments and traini
 
 You can perform most asset management tasks to set up your environment in the *Studio* interface, but it's also important to be able to script configuration tasks to make them easier to repeat and automate.
 
-1. Return to the **Compute** page, view the **Notebook VMs** tab, and if necessary, wait until the Notebook VM has been created. Then verify that it is running, and then click the **Jupyter** or **JupyterLab** link, depending on the notebook environment you want to use in this lab (you can experiment with both, they have access to the same file system in the Notebook VM).
+1. Return to the **Compute** page, view the **Notebook VMs** tab, and if necessary, wait until the Notebook VM has been created. Then verify that it is running, and then click the **Jupyter** link.
 2. In the notebook environment, open a new **Terminal**, and in the **Users** folder, run the following command:
 
     ```bash

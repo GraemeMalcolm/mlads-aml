@@ -109,7 +109,7 @@ Now you have an inference pipeline for real-time inferencing, which you can publ
 7. On the **Endpoints** page, open the **predict-diabetes** real-time endpoint.
 8. When the **predict-diabetes** endpoint opens, on the **Test** page, note the default test input parameters and then click **Test** to submit them to the deployed web service and generate a prediction.
 9. On the **Consume** tab, view the sample code that is provided for **Python**, and then copy the entire Python sample script to the clipboard.
-10. On the **Compute** page, if your notebook VM is not running, start it. Then open JupyterLab or Jupyter in a new browser tab.
+10. On the **Compute** page, if your notebook VM is not running, start it. Then open Jupyter in a new browser tab.
 11. In the **mlads-aml/notebooks** folder, open **02 - Using the Visual Designer.ipynb**.
 12. In the notebook, paste the code you copied into the empty code cell.
 13. Run the code cell and view the output returned by your web service.

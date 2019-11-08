@@ -8,7 +8,7 @@ Before you start this exercise, ensure that you have completed the [previous exe
 
 In a real production environment, data preparation, model training, and web service deployment are often automated as part of a *DevOps* process.
 
-1. Start your Notebook VM and connect to **Jupyter** or **JupyterLab**.
+1. Start your Notebook VM and connect to **Jupyter**.
 2. In the **/mlads-aml/notebooks** folder, open the **04 - Automating ML Workflows with Pipelines.ipynb** notebook.
 3. Read the notes in the notebook, running each code cell in turn.
 
