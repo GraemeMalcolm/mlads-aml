@@ -12,7 +12,7 @@ As its name suggests, a workspace is a centralized place to manage all of the Az
 
    > **Note**:
    >
-   >Basic edition workspaces have lower cost, but don't include capabilities like Auto ML, the Visual Designer, and graphical data drift monitoring. For more details, see [Azure Machine Learning pricing](https://azure.microsoft.com/en-us/pricing/details/machine-learning/).
+   >Basic edition workspaces have lower cost, but don't include capabilities like Auto ML, the Visual Designer, and a user interface for data drift monitoring. For more details, see [Azure Machine Learning pricing](https://azure.microsoft.com/en-us/pricing/details/machine-learning/).
    >
    > You can use any region in this lab, but if you plan to create GPU-based compute targets, you need to choose a region that supports the *NC-series* of VMs. Check the [Azure Products Available by Region page](https://azure.microsoft.com/en-us/global-infrastructure/services/?products=virtual-machines).
 
@@ -38,12 +38,12 @@ You'll also need cloud-based compute on which you can run experiments and traini
 1. In the *Studio* web interface for your workspace, view the **Compute** page. This is where you'll manage all the compute targets for your data science activities.
 2. On the **Notebook VMs** tab, add a new **Notebook VM**, giving it a unique name and using the default VM type template.
 3. While the notebook VM is being created, switch to the **Training Clusters** tab, and add a new training cluster with the following settings:
-    * **Compute name**: cpu-cluster
-    * **Virtual Machine size**: Standard_DS12_v2
+    * **Compute name**: aml-compute1
+    * **Virtual Machine size**: Standard_DS2_v2
     * **Virtual Machine priority**: Dedicated
     * **Minimum number of nodes**: 0
     * **Maximum number of nodes**: 4
-    * **Idle seconds before scale down**: 120
+    * **Idle seconds before scale down**: 60
 
 4. Note the **Inference Clusters** tab. This is where you can create and manage compute targets on which to deploy your trained models as web services for client applications to consume.
 

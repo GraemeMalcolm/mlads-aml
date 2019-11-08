@@ -10,8 +10,8 @@ The Designer provides a drag & drop environment in which you can define a workfl
 
 1. In the Azure Machine Learning *Studio* web interface, view the **Designer** page and create a new pipeline.
 2. Change the default pipeline name (at the top) (**Pipeline-Created-on-*date***) to **Visual Diabetes Training**.
-3. Use the **&#9881;** icon to view the settings for the pipeline, and note that you need to specify a compute target on which to run the pipeline. Click **Select compute target** and select the **cpu-cluster** compute target you created in the previous exercise.
-4. On the left side of the designer, expand the **Datasets** section, and drag the **diabetes dataset** dataset you created in the previous exercise onto the canvas.
+3. Use the **&#9881;** icon to view the settings for the pipeline, and note that you need to specify a compute target on which to run the pipeline. Click **Select compute target** and select the **aml-compute2** compute target you created in a previous exercise.
+4. On the left side of the designer, expand the **Datasets** section, and drag the **diabetes dataset** dataset you created in a previous exercise onto the canvas.
 5. Select the **diabetes dataset** module on the canvas, and view its settings. Then on the **outputs** tab, click the **Visualize** icon (which looks liks a bar chart).
 6. Review the schema of the data, noting that you can see the distributions of the various columns as histograms. Then close the visualization.
 7. In the pane on the left, expand the **Data Transformation** section, which contains a wide range of modules you can use to transform data and pre-process it before model training. Drag a **Normalize Data** module to the canvas, below the **diabetes dataset** module. Then connect the output from the **diabetes dataset** module to the input of the **Normalize Data** module.
@@ -40,55 +40,13 @@ The Designer provides a drag & drop environment in which you can define a workfl
 
     ![Visual Training Pipeline](images/visual-training.jpg)
 
-17. At the top right, click **Run**. Then when prompted, create a new *experiment* named **visual-training**, and run it.  This will initialize the compute target and then run the pipeline, which may take several minutes.
+17. At the top right, click **Run**. Then when prompted, create a new *experiment* named **visual-training**, and run it.  This will initialize the compute target and then run the pipeline, which may take several minutes. Complete the next task while it runs.
 
-    **Tip**: While it's running, you can view the pipeline and experiment that have been created in the **Pipelines** and **Experiments** pages in the **Studio** web interface. Switch back to the **Visual Diabetes Training** pipeline on the **Designer** page when you're done.
-
-18. After the **Normalize Data** module has finished (indicated by a &#x2705; icon), select it, and in the **Settings** pane, on the **Outputs** tab, in the **Transformed dataset** section, click the **Visualize** icon (which looks like a column chart), and note that you can view statistics and distribution visualizations for the transformed columns.
-19. Close the **Normalize Data** visualizations and wait for the rest of the modules to complete. Then visualize the **Evaluate Model** module to see the performance metrics for the model.
-
-    **Note**: The performance of this model isn't all that great, partly because we performed only minimal feature engineering and pre-processing. You could try some different classification algorithms and compare the results (you can connect the outputs of the **Split Data** module to multiple **Train Model** and **Score Model** modules, and you can connect a second scored model to the **Evaluate Model** module to see a side-by-side comparison). The point of the exercise is simply to introduce you to the Designer interface, not to train a perfect model!
-
-## Task 2: Create an Inference Pipeline
-
-Now that you have a trained model, you can take the training pipeline and use it to create an inference pipeline for scoring new data.
-
-1. In your **Visual Diabetes Training** pipeline, in the **Create inference pipeline** drop-down list, click **Real-time inference pipeline**. After a few seconds, a new version of your pipeline named **Visual Diabetes Training-real time inference** will be opened.
-2. Rename the new pipeline to **Predict Diabetes**, and then review the new pipeline. Note that some of the transformations and training steps have been encapsulated in this pipeline so that the statistics from your training data will be used to normalize any new data values, and the trained model will be used to score the new data.
-3. The inference pipeline assumes that new data will match the schema of the original training data, so the **diabetes dataset** module from the training pipeline is included. However, this input data includes the **Diabetic** label that the model predicts, which is unintuitive to include in new patient data for which a diabetes prediction has not yet been made. Delete this module and replace it with an **Enter Data Manually** module from the **Data Input and Output** section, connected to the same **dataset** input of the **Apply Transformation** module as the **Web Service Input**. Then modify the settings of the **Enter Data Manually** module to use the following CSV input, which includes feature values without labels for three new patient observations:
-
-    ```CSV
-    PatientID,Pregnancies,PlasmaGlucose,DiastolicBloodPressure,TricepsThickness,SerumInsulin,BMI,DiabetesPedigree,Age
-    1882185,9,104,51,7,24,27.36983156,1.350472047,43
-    1662484,6,73,61,35,24,18.74367404,1.074147566,75
-    1228510,4,115,50,29,243,34.69215364,0.741159926,59
-    ```
-
-4. The inference pipeline includes the **Evaluate Model** module, which is not useful when predicting from new data, so delete this module.
-5. The ouput from the **Score Model** module includes all of the input features as well as the predicted label and probability score. To limit the output to only the prediction and probability, delete the connection between the **Score Model** module and the **web Service Output**, add an **Apply SQL Transformation** module from the **Data Transformations** section, connect the output from the **Score Model** module to the **t1** (left-most) input of the **Apply SQL Transformation**, and connect the output of the **Apply SQL Transformation** module to the **Web Service Output**. Then modify the settings of the **Apply SQL Transformation** module to use the following SQL query script:
-
-    ```SQL
-    SELECT PatientID,
-           [Scored Labels] AS DiabetesPrediction,
-           [Scored Probabilities] AS Probability
-    FROM t1
-    ```
-
-6. Verify that your pipeline looks similar to the following:
-
-    ![Visual Inference Pipeline](images/visual-inference.jpg)
-
-7. Run the pipeline as a new experiment named **predict-diabetes**. This may take a while!
-
-    While you're waiting for the pipeline to run, you can go ahead and start the next task.
-
-## Task 3: Publish a Web Service
-
-Now you have an inference pipeline for real-time inferencing, which you can publish as a web service for client applications to use. To host this web service, you'll need to create a new compute target (you can't use the training compute target).
+## Task 2: Create Inference Compute
 
 1. On the **Compute** page, review the existing compute targets under each tab. These should include:
-    * **Notebook VMs**: The notebook VM you created in the previous exercise.
-    * **Training Clusters**: The **cpu-cluster** compute you created in the previous exercise.
+    * **Notebook VMs**: The notebook VM you created in a previous exercise.
+    * **Training Clusters**: The **aml-compute1** and **aml-compute2** clusters you created in a previous exercise.
     * **Inference Clusters**: None (yet!)
     * **Attached Compute**: None (this is where you could attach a virtual machine or Databricks cluster that exists outside of your workspace)
 
@@ -102,17 +60,60 @@ Now you have an inference pipeline for real-time inferencing, which you can publ
     * **Network configuration**: Basic
     * **Enable SSL configuration**: Unselected
 
-3. Wait for your inference cluster to be created. This may take quite a bit of time.
-4. Switch back to the **Designer** tab and reopen your **Predict Diabetes** inference pipeline. If it has not yet finished running, await it's completion. Then visualize the output of the **Apply SQL Transformation** module to see the predicted labels and probabilties for the three patient observations in the input data.
-5. At the top right, click **Deploy**, and set up a new real-time endpoint named **predict-diabetes** on the **aks-cluster** compute target you created.
-6. Wait for the web service to be deployed - this can take a few minutes.
-7. On the **Endpoints** page, open the **predict-diabetes** real-time endpoint.
-8. When the **predict-diabetes** endpoint opens, on the **Test** page, note the default test input parameters and then click **Test** to submit them to the deployed web service and generate a prediction.
-9. On the **Consume** tab, view the sample code that is provided for **Python**, and then copy the entire Python sample script to the clipboard.
-10. On the **Compute** page, if your notebook VM is not running, start it. Then open Jupyter in a new browser tab.
-11. In the **mlads-aml/notebooks** folder, open **04 - Using the Visual Designer.ipynb**.
-12. In the notebook, paste the code you copied into the empty code cell.
-13. Run the code cell and view the output returned by your web service.
+3. While the inference cluster is being created, return to the **Visual Diabetes Training** pipeline on the **Designer** page.
+
+## Task 3: Create an Inference Pipeline
+
+After you have a trained model, you can take the training pipeline and use it to create an inference pipeline for scoring new data.
+
+1. In the the **Visual Diabetes Training** pipeline, wait for all of the modules to complete (indicated by a &#x2705; icon).
+2. Select the **Evaluate Model** module, and in the **Settings** pane, on the **Outputs** tab, click the **Visualize** icon (which looks like a column chart) to see the performance metrics for the trained model.
+
+    **Note**: The performance of this model isn't all that great, partly because we performed only minimal feature engineering and pre-processing. You could try some different classification algorithms and compare the results (you can connect the outputs of the **Split Data** module to multiple **Train Model** and **Score Model** modules, and you can connect a second scored model to the **Evaluate Model** module to see a side-by-side comparison). The point of the exercise is simply to introduce you to the Designer interface, not to train a perfect model!
+
+3. In your **Visual Diabetes Training** pipeline, in the **Create inference pipeline** drop-down list, click **Real-time inference pipeline**. After a few seconds, a new version of your pipeline named **Visual Diabetes Training-real time inference** will be opened.
+4. Rename the new pipeline to **Predict Diabetes**, and then review the new pipeline. Note that some of the transformations and training steps have been encapsulated in this pipeline so that the statistics from your training data will be used to normalize any new data values, and the trained model will be used to score the new data.
+5. The inference pipeline assumes that new data will match the schema of the original training data, so the **diabetes dataset** module from the training pipeline is included. However, this input data includes the **Diabetic** label that the model predicts, which is unintuitive to include in new patient data for which a diabetes prediction has not yet been made. Delete this module and replace it with an **Enter Data Manually** module from the **Data Input and Output** section, connected to the same **dataset** input of the **Apply Transformation** module as the **Web Service Input**. Then modify the settings of the **Enter Data Manually** module to use the following CSV input, which includes feature values without labels for three new patient observations:
+
+    ```CSV
+    PatientID,Pregnancies,PlasmaGlucose,DiastolicBloodPressure,TricepsThickness,SerumInsulin,BMI,DiabetesPedigree,Age
+    1882185,9,104,51,7,24,27.36983156,1.350472047,43
+    1662484,6,73,61,35,24,18.74367404,1.074147566,75
+    1228510,4,115,50,29,243,34.69215364,0.741159926,59
+    ```
+
+6. The inference pipeline includes the **Evaluate Model** module, which is not useful when predicting from new data, so delete this module.
+7. The ouput from the **Score Model** module includes all of the input features as well as the predicted label and probability score. To limit the output to only the prediction and probability, delete the connection between the **Score Model** module and the **web Service Output**, add an **Apply SQL Transformation** module from the **Data Transformations** section, connect the output from the **Score Model** module to the **t1** (left-most) input of the **Apply SQL Transformation**, and connect the output of the **Apply SQL Transformation** module to the **Web Service Output**. Then modify the settings of the **Apply SQL Transformation** module to use the following SQL query script:
+
+    ```SQL
+    SELECT PatientID,
+           [Scored Labels] AS DiabetesPrediction,
+           [Scored Probabilities] AS Probability
+    FROM t1
+    ```
+
+8. Verify that your pipeline looks similar to the following:
+
+    ![Visual Inference Pipeline](images/visual-inference.jpg)
+
+9. Run the pipeline as a new experiment named **predict-diabetes** on the **aml-compute2** compute, and wait for it to complete. This may take a while!
+10. Visualize the output of the **Apply SQL Transformation** module to see the predicted labels and probabilties for the three patient observations in the input data.
+
+## Task 3: Publish a Web Service
+
+Now you have an inference pipeline for real-time inferencing, which you can publish as a web service for client applications to use. To host this web service, you'll use the new **aks-compute** inference cluster (you can't host a web service on a training cluster).
+
+1. On the **Compute** page, on the **Inference Clusters** tab, verify that the **aks-cluster** compute target has been created (you may need to **Refresh** the tab).
+2. Switch back to the **Designer** tab and reopen your **Predict Diabetes** inference pipeline.
+3. At the top right, click **Deploy**, and set up a new real-time endpoint named **predict-diabetes** on the **aks-cluster** compute target you created.
+4. Wait for the web service to be deployed - this can take several minutes.
+5. On the **Endpoints** page, open the **predict-diabetes** real-time endpoint.
+6. When the **predict-diabetes** endpoint opens, on the **Test** page, note the default test input parameters and then click **Test** to submit them to the deployed web service and generate a prediction.
+7. On the **Consume** tab, view the sample code that is provided for **Python**, and then copy the entire Python sample script to the clipboard.
+8. On the **Compute** page, if your notebook VM is not running, start it. Then open Jupyter in a new browser tab.
+9. In the **mlads-aml/notebooks** folder, open **04 - Using the Visual Designer.ipynb**.
+10. In the notebook, paste the code you copied into the empty code cell.
+11. Run the code cell and view the output returned by your web service.
 
 ## Task 4: Delete the Web Service and Compute
 
