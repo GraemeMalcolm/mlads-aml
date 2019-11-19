@@ -27,6 +27,9 @@ You can manage workspace assets in the Azure portal, but for data scientists, th
 > **Note**: The web-based interface for Azure ML is named *Studio*, which you may find confusing as there is also a free *Azure Machine Learning Studio* product for creating machine learning models using a visual designer. A more scalable version of this visual designer is included in the new Studio interface.
 
 1. In the portal blade for your workspace, click the link to launch Studio; or alternatively, in a new browser tab, open [https://ml.azure.com](https://ml.azure.com). If prompted, sign in using the Microsoft account you used to sign into Azure in the previous task and select your Azure subscription and the workspace you created in the previous task.
+
+> **Note**: If you are using a personal Microsoft account, but you have signed into some sites using your Corporate credentials, you may need to open Azure ML studio in a private browsing session.
+
 2. View the Studio interface for your workspace - you can manage all of the assets in your workspace from here.
 
 ## Task 3: Create Compute Resources
